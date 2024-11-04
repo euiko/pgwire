@@ -10,3 +10,6 @@
 [submodule "third_party/promise-cpp"]
 	path = third_party/promise-cpp
 	url = https://github.com/xhawk18/promise-cpp
+[submodule "third_party/catch2"]
+	path = third_party/catch2
+	url = https://github.com/catchorg/Catch2.git

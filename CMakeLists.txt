@@ -1,5 +1,8 @@
-cmake_minimum_required(VERSION 2.17)
-project(duckpg LANGUAGES CXX)
+cmake_minimum_required(VERSION 3.5)
+project(duckpg
+    VERSION 0.0.1
+    LANGUAGES CXX
+)
 
 # some options
 option(PGWIRE_BUILD_SHARED "Build shared library" OFF)
@@ -9,7 +12,6 @@ option(PGWIRE_BUILD_TEST "Build test" ON)
 # dependencies
 option(PROMISE_BUILD_EXAMPLES "Build examples" OFF)
 include(third_party/asio.cmake)
-add_subdirectory(third_party/catch2)
 add_subdirectory(third_party/endian)
 add_subdirectory(third_party/function2)
 add_subdirectory(third_party/promise-cpp)
@@ -28,5 +30,6 @@ if(PGWIRE_BUILD_DEMO)
 endif()
 # tests
 if(PGWIRE_BUILD_TEST)
+    add_subdirectory(third_party/catch2)
     add_subdirectory(test)
 endif()

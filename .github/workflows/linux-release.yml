@@ -1,0 +1,37 @@
+name: linux-release
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Restore cached linux release build
+        id: cache-restore-build-linux-release
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            ${{github.workspace}}/build-linux-release
+          key: ${{ runner.os }}-build-linux-release
+      - name: Configure CMake
+        run: cmake -B ${{github.workspace}}/build-linux-release -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      - name: Build
+        run: cmake --build ${{github.workspace}}/build-linux-release --config ${{env.BUILD_TYPE}}
+      - name: Save cache linux release build
+        id: cache-save-build-linux-release
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            ${{github.workspace}}/build-linux-release
+          key: ${{ steps.cache-restore-build-linux-release.outputs.cache-primary-key }}
+      - name: Test
+        working-directory: ${{github.workspace}}/build-linux-release/test
+        run: ctest -C ${{env.BUILD_TYPE}}

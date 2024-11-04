@@ -1,5 +1,8 @@
 add_executable(pgwire-test
-    main.cpp
     utils.cpp
 )
-target_link_libraries(pgwire-test PRIVATE catch2 pgwire)
+target_link_libraries(pgwire-test PRIVATE Catch2WithMain pgwire)
+
+include(CTest)
+include(Catch)
+catch_discover_tests(pgwire-test)
