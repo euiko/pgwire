@@ -17,4 +17,5 @@ else()
     add_library(pgwire STATIC ${SOURCES})
 endif()
 
+target_include_directories(pgwire PUBLIC ${INCLUDE_DIRECTORIES})
 target_link_libraries(pgwire PUBLIC asio endian function2 promise)

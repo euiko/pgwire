@@ -21,6 +21,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # main project
+set(INCLUDE_DIRECTORIES ${CMAKE_CURRENT_LIST_DIR}/include)
 include_directories(include)
 add_subdirectory(src/pgwire)
 
