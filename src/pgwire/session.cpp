@@ -86,19 +86,24 @@ Promise Session::process_message(FrontendMessagePtr msg) {
     case FrontendType::SSLRequest:
         return this->write(encode_bytes(SSLResponse{}));
     case FrontendType::Query: {
-        auto *query = static_cast<Query *>(msg.get());
+        auto *q = static_cast<Query *>(msg.get());
         auto id = ++id_counter;
         try {
-            auto quoted = string_escape_space(
-                (std::stringstream() << std::quoted(query->query)).str() //
-            );
+            // quote query to be logged
+            std::string quoted;
+            {
+                std::stringstream ss;
+                ss << std::quoted(q->query);
+                quoted = string_escape_space(ss.str());
+            }
             auto timer = timer_start();
             log::info("[session #%d] [query #%d] executing query %s", _id, id,
                       quoted.c_str());
+
             // use shared_ptr to extend PreparedStatement, so it can outlive
             // this function
             auto prepared =
-                std::make_shared<PreparedStatement>((*_handler)(query->query));
+                std::make_shared<PreparedStatement>((*_handler)(q->query));
             return this->write(encode_bytes(RowDescription{prepared->fields}))
                 .then([this, prepared] {
                     Writer writer{prepared->fields.size()};
