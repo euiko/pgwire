@@ -27,7 +27,8 @@ std::string now_rfc3339() {
     // move last 2 digits
     if (len > 1) {
         char minute[] = {buf[len - 2], buf[len - 1], '\0'};
-        sprintf(buf + len - 2, ":%s", minute);
+        // :mm\0 contains 4 chars
+        snprintf(buf + len - 2, 4, ":%s", minute);
     }
 
     // add one to account the colon (:)

@@ -15,7 +15,7 @@ write_numeric(Buffer &buffer, FormatCode format_code, T value,
         break;
     case FormatCode::Text: {
         char buf[256];
-        auto len = sprintf(buf, format, value);
+        auto len = snprintf(buf, 256, format, value);
         buffer.put_numeric<int32_t>(len);
         buffer.put_bytes(reinterpret_cast<Byte const *>(buf), len);
         break;
